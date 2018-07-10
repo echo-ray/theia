@@ -26,9 +26,10 @@ const path = require('path');
 const packageJson = require('../package.json');
 const shared = require('./shared');
 const packagePath = path.join(__dirname, "..");
-const serverPath = packageJson['ls.download.path'] || '/che/che-ls-jdt/snapshots/che-jdt-language-server-latest.tar.gz';
-const downloadURI = packageJson['ls.download.base'] || 'https://www.eclipse.org/downloads/download.php?file=';
-const archiveUri = downloadURI + serverPath + '&r=1';
+// TODO revert this!
+const serverPath = 'https://github.com/kittaakos/eclipse.jdt.ls-gh-715/raw/master/jdt-language-server-latest.tar.gz';//packageJson['ls.download.path'] || '/che/che-ls-jdt/snapshots/che-jdt-language-server-latest.tar.gz';
+// const downloadURI = packageJson['ls.download.base'] || 'https://www.eclipse.org/downloads/download.php?file=';
+// const archiveUri = downloadURI + serverPath + '&r=1';
 const filename = path.basename(serverPath);
 const downloadDir = 'download';
 const downloadPath = path.join(packagePath, downloadDir);
@@ -63,12 +64,13 @@ function downloadJavaServer() {
                     response.pipe(file);
                 } else {
                     file.destroy();
-                    reject(`failed to download with code: ${statusCode}`);
+                    reject(new Error(`failed to download with code: ${statusCode}`));
                 }
             })
 
         };
-        downloadWithRedirect(archiveUri);
+        // downloadWithRedirect(archiveUri);
+        downloadWithRedirect(serverPath);
     });
 }
 

@@ -89,17 +89,40 @@ export interface TextEditor extends Disposable, TextEditorSelection, Navigatable
      */
     deltaDecorations(params: DeltaDecorationParams): string[];
 
+    /**
+     * Get the range associated with a decoration.
+     * @param id The decoration id.
+     * @return The decoration range or `undefined` if the decoration was not found.
+     */
+    getDecorationRange(id: string): Range | undefined;
+
+    /**
+     * Gets all the decorations in a range as an array. Only `start.line` and `end.line` from `range` are used for filtering.
+     * So for now it returns all the decorations on the same line as `range`.
+     * @param range The range to search in.
+     * @return An array with the decorations.
+     */
+    getDecorationsInRange(range: Range): EditorDecoration[];
+
+    /**
+     * Gets all the decorations for the lines between `startLineNumber` and `endLineNumber` as an array.
+     * @param startLineNumber The start line number.
+     * @param endLineNumber The end line number.
+     * @return An array with the decorations.
+     */
+    getLinesDecorations(startLineNumber: number, endLineNumber: number): EditorDecoration[];
+
     getVisibleColumn(position: Position): number;
 
     /**
-     * Replaces the text of source given in ReplacetextParams.
+     * Replaces the text of source given in ReplaceTextParams.
      * @param params: ReplaceTextParams
      */
     replaceText(params: ReplaceTextParams): Promise<boolean>;
 
     /**
      * Execute edits on the editor.
-     * @param edits: edits created with `lsp.TextEdit.replace`, `lsp.TextEdit.instert`, `lsp.TextEdit.del`
+     * @param edits: edits created with `lsp.TextEdit.replace`, `lsp.TextEdit.insert`, `lsp.TextEdit.del`
      */
     executeEdits(edits: lsp.TextEdit[]): boolean;
 }

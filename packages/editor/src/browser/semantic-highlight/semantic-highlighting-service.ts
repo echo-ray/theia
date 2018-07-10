@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2017 TypeFox and others.
+ * Copyright (C) 2018 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,14 +14,26 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ContainerModule } from "inversify";
-import { CliContribution } from '@theia/core/lib/node/cli';
-import { LanguageServerContribution } from '@theia/languages/lib/node';
-import { JavaContribution } from './java-contribution';
-import { JavaCliContribution } from './java-cli-contribution';
+import { injectable } from 'inversify';
+import { Position, Range } from 'vscode-languageserver-types';
+import URI from '@theia/core/lib/common/uri';
+import { Disposable } from '@theia/core/lib/common/disposable';
 
-export default new ContainerModule(bind => {
-    bind(LanguageServerContribution).to(JavaContribution).inSingletonScope();
-    bind(JavaCliContribution).toSelf().inSingletonScope();
-    bind(CliContribution).toService(JavaCliContribution);
-});
+@injectable()
+export class SemanticHighlightingService implements Disposable {
+
+    async decorate(uri: URI, ranges: SemanticHighlightingRange[]): Promise<void> {
+        // NOOP
+    }
+
+    dispose(): void {
+        // NOOP
+    }
+
+}
+
+export interface SemanticHighlightingRange extends Range {
+    readonly scopes: string[];
+}
+
+export { Position, Range };
